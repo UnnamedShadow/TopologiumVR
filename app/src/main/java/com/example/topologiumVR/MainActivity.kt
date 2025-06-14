@@ -28,7 +28,7 @@ class MainActivity : AppSystemActivity() {
         super.onCreate(savedInstanceState)
         requestPermissions()
         systemManager.findSystem<GrabbableSystem>().grabButtons =
-            (ButtonBits.ButtonSqueezeR or ButtonBits.ButtonSqueezeL or ButtonBits.ButtonX)
+            (ButtonBits.ButtonSqueezeR or ButtonBits.ButtonSqueezeL)
     }
 
     override fun onSceneReady() {
@@ -37,34 +37,28 @@ class MainActivity : AppSystemActivity() {
         scene.enablePassthrough(true)
         scene.setReferenceSpace(ReferenceSpace.LOCAL_FLOOR)
         scene.setViewOrigin(0f, 0f, 0f, 0f)
-
     }
 
     override fun registerPanels(): List<PanelRegistration> {
         return mutableListOf(
-            PanelRegistration(R.integer.equation_panel_id) {
-                activityClass = EquationPanel::class.java
+            PanelRegistration(R.integer.main_panel_id) {
+                activityClass = MainPanel::class.java
                 config {
-                    fractionOfScreen = 0.75f
-                    height = 1f
-                    width = 2f
-                    layoutDpi = 100
+                    fractionOfScreen = 1f
+                    height = 0.1f
+                    width = 0.4f
+                    layoutDpi = 600
                     includeGlass = true
                     layerConfig = LayerConfig()
-                    enableTransparent = false
-                    // enable handgrab
-                    clickButtons =
-                        (ButtonBits.ButtonA or ButtonBits.ButtonTriggerL or ButtonBits.ButtonTriggerR)
+                    enableTransparent = true
+                    clickButtons = ButtonBits.ButtonTriggerL or ButtonBits.ButtonTriggerR
                 }
             }
         )
     }
 
     private fun requestPermissions() {
-        val permissionsNeeded =
-            arrayOf(
-                "com.oculus.permission.USE_SCENE",
-                )
+        val permissionsNeeded = arrayOf("com.oculus.permission.USE_SCENE")
 
         ActivityCompat.requestPermissions(this, permissionsNeeded, 100)
     }
@@ -74,12 +68,12 @@ class MainActivity : AppSystemActivity() {
     override fun onVRReady() {
         super.onVRReady()
         if (!isFirstReadyDone) {
-            Entity(R.integer.equation_panel_id)
+            Entity(R.integer.main_panel_id)
                 .setComponents(listOf(
                     Grabbable(),
-                    Panel(R.integer.equation_panel_id),
+                    Panel(R.integer.main_panel_id),
                     Transform(
-                        Pose() * Pose(Vector3(-1f, 1.25f, 1.2f), Quaternion(0f, 0f, 0f))),
+                        Pose() * Pose(Vector3.Forward, Quaternion(0f, 0f, 0f))),
                 ))
             isFirstReadyDone = true
         }

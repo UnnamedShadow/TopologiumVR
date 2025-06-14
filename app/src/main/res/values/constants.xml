@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="equation_panel_id">
+    <integer name="main_panel_id">
         1
     </integer>
 </resources>
